@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CATCH KAILASH!</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --purple: #8b5cf6;
+    --pink: #ec4899;
+    --blue: #38bdf8;
+    --yellow: #facc15;
+    --green: #4ade80;
+    --red: #fb7185;
+    --dark: #090b16;
+}
+
+body {
+    font-family: "Fredoka", sans-serif;
+    background: var(--dark);
+    color: white;
+    min-height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .28;
+    animation: blobMove 9s ease-in-out infinite alternate;
+}
+
+.blob.one {
+    width: 280px;
+    height: 280px;
+    background: #7c3aed;
+    top: -100px;
+    left: -80px;
+}
+
+.blob.two {
+    width: 300px;
+    height: 300px;
+    background: #ec4899;
+    right: -120px;
+    bottom: -100px;
+    animation-delay: -3s;
+}
+
+.blob.three {
+    width: 220px;
+    height: 220px;
+    background: #0ea5e9;
+    left: 45%;
+    top: 45%;
+    animation-delay: -6s;
+}
+
+@keyframes blobMove {
+    from {
+        transform: translate(0,0) scale(1);
+    }
+    to {
+        transform: translate(35px,-25px) scale(1.2);
+    }
+}
+
+/* =========================
+   APP
+========================= */
+
+#app {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.screen.active {
+    display: flex;
+    animation: screenIn .45s ease;
+}
+
+@keyframes screenIn {
+    from {
+        opacity: 0;
+        transform: scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* =========================
+   HOME
+========================= */
+
+.home {
+    width: 100%;
+    max-width: 550px;
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 30px;
+}
+
+.logo .emoji {
+    font-size: 75px;
+    display: block;
+    animation: bounce 1.8s ease-in-out infinite;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,.4));
+}
+
+@keyframes bounce {
+    0%,100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(3deg);
+    }
+}
+
+.logo h1 {
+    font-size: clamp(42px, 12vw, 70px);
+    line-height: .88;
+    letter-spacing: -3px;
+    font-weight: 700;
+    margin-top: 12px;
+}
+
+.logo h1 span {
+    background: linear-gradient(
+        90deg,
+        #a78bfa,
+        #f472b6,
+        #38bdf8
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.logo p {
+    color: #9ca3af;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+.home-card {
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 28px;
+    padding: 25px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 70px rgba(0,0,0,.35);
+}
+
+.how {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.how-item {
+    flex: 1;
+    padding: 14px 7px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.05);
+}
+
+.how-item .icon {
+    font-size: 28px;
+}
+
+.how-item span {
+    display: block;
+    margin-top: 5px;
+    color: #aaa;
+    font-size: 12px;
+}
+
+.btn {
+    width: 100%;
+    border: none;
+    color: white;
+    padding: 17px;
+    border-radius: 17px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:active {
+    transform: scale(.96);
+}
+
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #ec4899
+    );
+    box-shadow:
+        0 10px 30px rgba(124,58,237,.3);
+}
+
+.highscore-home {
+    margin-top: 16px;
+    color: #888;
+    font-size: 14px;
+}
+
+.highscore-home strong {
+    color: #facc15;
+}
+
+/* =========================
+   GAME
+========================= */
+
+.game-screen {
+    flex-direction: column;
+    justify-content: flex-start !important;
+    padding: 12px;
+}
+
+.game-ui {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 20;
+}
+
+.stat {
+    flex: 1;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 17px;
+    padding: 9px 12px;
+    backdrop-filter: blur(10px);
+    min-width: 0;
+}
+
+.stat-label {
+    color: #777;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.score-value {
+    color: #c4b5fd;
+}
+
+.combo-value {
+    color: #f472b6;
+}
+
+.time-value {
+    color: #38bdf8;
+}
+
+.progress-wrap {
+    width: 100%;
+    max-width: 900px;
+    height: 5px;
+    background: rgba(255,255,255,.08);
+    border-radius: 20px;
+    margin-top: 8px;
+    overflow: hidden;
+    z-index: 20;
+}
+
+.progress {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #8b5cf6,
+        #ec4899,
+        #38bdf8
+    );
+    transform-origin: left;
+}
+
+/* =========================
+   PLAY AREA
+========================= */
+
+#playArea {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    flex: 1;
+    margin-top: 10px;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(124,58,237,.08),
+            transparent 60%
+        ),
+        rgba(255,255,255,.018);
+}
+
+/* grid */
+#playArea::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        );
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+/* =========================
+   KAILASH
+========================= */
+
+#kailash {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 58px;
+    cursor: pointer;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    filter:
+        drop-shadow(0 8px 12px rgba(0,0,0,.4));
+    transition:
+        left .13s cubic-bezier(.2,.8,.2,1),
+        top .13s cubic-bezier(.2,.8,.2,1),
+        transform .12s ease;
+}
+
+#kailash:active {
+    transform:
+        translate(-50%, -50%)
+        scale(.72);
+}
+
+.kailash-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(167,139,250,.2);
+    animation: ringPulse 1.4s infinite;
+    pointer-events: none;
+}
+
+@keyframes ringPulse {
+    0% {
+        transform: scale(.8);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.45);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   BONUS
+========================= */
+
+.bonus {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 38px;
+    cursor: pointer;
+    z-index: 9;
+    animation: bonusFloat 1s ease-in-out infinite alternate;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,.4));
+}
+
+@keyframes bonusFloat {
+    from {
+        transform: translate(-50%, -50%) scale(.9) rotate(-7deg);
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1.1) rotate(7deg);
+    }
+}
+
+/* =========================
+   FLOATING TEXT
+========================= */
+
+.float-text {
+    position: absolute;
+    pointer-events: none;
+    z-index: 30;
+    font-size: 22px;
+    font-weight: 700;
+    animation: floatText .7s ease-out forwards;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+@keyframes floatText {
+    0% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(.8);
+    }
+    100% {
+        opacity: 0;
+        transform:
+            translate(-50%, -110px)
+            scale(1.2);
+    }
+}
+
+/* =========================
+   PARTICLES
+========================= */
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 40;
+    font-size: 16px;
+    animation: particle .8s ease-out forwards;
+}
+
+@keyframes particle {
+    from {
+        opacity: 1;
+        transform:
+            translate(0,0)
+            scale(1)
+            rotate(0);
+    }
+    to {
+        opacity: 0;
+        transform:
+            translate(var(--x),var(--y))
+            scale(.2)
+            rotate(180deg);
+    }
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
+
+#countdown {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background: rgba(5,5,12,.45);
+    backdrop-filter: blur(5px);
+}
+
+#countdown.active {
+    display: flex;
+}
+
+.count-number {
+    font-size: 130px;
+    font-weight: 700;
+    animation: countPop .8s ease;
+    background: linear-gradient(
+        135deg,
+        #a78bfa,
+        #f472b6
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+@keyframes countPop {
+    0% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(.8);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   FREEZE
+========================= */
+
+.freeze-overlay {
+    position: absolute;
+    inset: 0;
+    border: 5px solid rgba(56,189,248,.45);
+    border-radius: 25px;
+    pointer-events: none;
+    z-index: 25;
+    animation: freezePulse .7s infinite alternate;
+}
+
+@keyframes freezePulse {
+    from {
+        opacity: .35;
+    }
+    to {
+        opacity: .8;
+    }
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-card {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    padding: 30px 25px;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 28px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 70px rgba(0,0,0,.4);
+}
+
+.result-emoji {
+    font-size: 85px;
+    animation: resultBounce 1s ease-in-out infinite alternate;
+}
+
+@keyframes resultBounce {
+    from {
+        transform: translateY(0) rotate(-5deg);
+    }
+    to {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+.result-card h2 {
+    font-size: 38px;
+    margin-top: 8px;
+}
+
+.final-score {
+    font-size: 70px;
+    font-weight: 700;
+    color: #c4b5fd;
+    margin: 10px 0;
+}
+
+.result-message {
+    color: #aaa;
+    line-height: 1.5;
+    min-height: 45px;
+}
+
+.result-stats {
+    display: flex;
+    gap: 10px;
+    margin: 22px 0;
+}
+
+.result-stat {
+    flex: 1;
+    background: rgba(255,255,255,.05);
+    padding: 14px 8px;
+    border-radius: 15px;
+}
+
+.result-stat small {
+    display: block;
+    color: #777;
+    font-size: 11px;
+}
+
+.result-stat strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 21px;
+}
+
+/* =========================
+   SHAKE
+========================= */
+
+.shake {
+    animation: shake .28s linear;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-7px); }
+    75% { transform: translateX(7px); }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .screen {
+        padding: 14px;
+    }
+
+    .logo .emoji {
+        font-size: 62px;
+    }
+
+    .logo h1 {
+        font-size: 48px;
+    }
+
+    .home-card {
+        padding: 18px;
+    }
+
+    .how-item {
+        padding: 11px 4px;
+    }
+
+    .how-item .icon {
+        font-size: 24px;
+    }
+
+    .stat {
+        padding: 8px 9px;
+    }
+
+    .stat-label {
+        font-size: 8px;
+    }
+
+    .stat-value {
+        font-size: 21px;
+    }
+
+    #kailash {
+        width: 70px;
+        height: 70px;
+        font-size: 49px;
+    }
+
+    .bonus {
+        font-size: 33px;
+    }
+
+    .result-card h2 {
+        font-size: 31px;
+    }
+
+    .final-score {
+        font-size: 60px;
+    }
+}
+
+@media (max-height: 650px) {
+
+    .logo {
+        margin-bottom: 15px;
+    }
+
+    .logo .emoji {
+        font-size: 48px;
+    }
+
+    .logo h1 {
+        font-size: 40px;
+    }
+
+    .logo p {
+        margin-top: 8px;
+    }
+
+    .home-card {
+        padding: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+</div>
+
+<div id="app">
+
+    <!-- =====================
+         HOME
+    ====================== -->
+
+    <section id="homeScreen" class="screen active">
+
+        <div class="home">
+
+            <div class="logo">
+
+                <span class="emoji">🏃‍♂️</span>
+
+                <h1>
+                    CATCH<br>
+                    <span>KAILASH!</span>
+                </h1>
+
+                <p>
+                    kalau bisa tangkep, tangkep.
+                    kalau nggak bisa... skill issue.
+                </p>
+
+            </div>
+
+            <div class="home-card">
+
+                <div class="how">
+
+                    <div class="how-item">
+                        <div class="icon">👀</div>
+                        <span>CARI</span>
+                    </div>
+
+                    <div class="how-item">
+                        <div class="icon">👆</div>
+                        <span>TAP</span>
+                    </div>
+
+                    <div class="how-item">
+                        <div class="icon">🏆</div>
+                        <span>MENANG</span>
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="startGame()"
+                >
+                    🎮 START GAME
+                </button>
+
+                <div class="highscore-home">
+                    HIGH SCORE:
+                    <strong id="homeHighscore">0</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================
+         GAME
+    ====================== -->
+
+    <section id="gameScreen" class="screen game-screen">
+
+        <div class="game-ui">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Score
+                </div>
+
+                <div
+                    class="stat-value score-value"
+                    id="score"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Combo
+                </div>
+
+                <div
+                    class="stat-value combo-value"
+                    id="combo"
+                >
+                    x0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Time
+                </div>
+
+                <div
+                    class="stat-value time-value"
+                    id="time"
+                >
+                    30
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-wrap">
+
+            <div
+                id="progress"
+                class="progress"
+            ></div>
+
+        </div>
+
+
+        <div id="playArea">
+
+            <div id="kailash">
+
+                <div class="kailash-ring"></div>
+
+                🏃‍♂️
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================
+         RESULT
+    ====================== -->
+
+    <section id="resultScreen" class="screen">
+
+        <div class="result-card">
+
+            <div
+                id="resultEmoji"
+                class="result-emoji"
+            >
+                🏆
+            </div>
+
+            <h2 id="resultTitle">
+                NICE!
+            </h2>
+
+            <div
+                id="finalScore"
+                class="final-score"
+            >
+                0
+            </div>
+
+            <div
+                id="resultMessage"
+                class="result-message"
+            >
+                ...
+            </div>
+
+            <div class="result-stats">
+
+                <div class="result-stat">
+                    <small>HIGH SCORE</small>
+                    <strong id="finalHighscore">0</strong>
+                </div>
+
+                <div class="result-stat">
+                    <small>BEST COMBO</small>
+                    <strong id="bestCombo">x0</strong>
+                </div>
+
+                <div class="result-stat">
+                    <small>CAUGHT</small>
+                    <strong id="caughtCount">0</strong>
+                </div>
+
+            </div>
+
+            <button
+                class="btn btn-primary"
+                onclick="startGame()"
+            >
+                🔄 PLAY AGAIN
+            </button>
+
+            <button
+                class="btn"
+                style="
+                    margin-top:10px;
+                    background:rgba(255,255,255,.07);
+                "
+                onclick="goHome()"
+            >
+                🏠 HOME
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- COUNTDOWN -->
+
+<div id="countdown">
+    <div
+        id="countNumber"
+        class="count-number"
+    >
+        3
+    </div>
+</div>
+
+
+<script>
+
+/* =========================================
+   GAME VARIABLES
+========================================= */
+
+const GAME_TIME = 30;
+
+let score = 0;
+let combo = 0;
+let bestComboThisGame = 0;
+let caught = 0;
+
+let timeLeft = GAME_TIME;
+
+let gameRunning = false;
+
+let moveTimer = null;
+let countdownTimer = null;
+let gameTimer = null;
+let bonusTimer = null;
+
+let difficulty = 1;
+
+let freezeUntil = 0;
+
+let highscore =
+    Number(localStorage.getItem("catchKailashHighscore")) || 0;
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const homeScreen =
+    document.getElementById("homeScreen");
+
+const gameScreen =
+    document.getElementById("gameScreen");
+
+const resultScreen =
+    document.getElementById("resultScreen");
+
+const playArea =
+    document.getElementById("playArea");
+
+const kailash =
+    document.getElementById("kailash");
+
+const scoreEl =
+    document.getElementById("score");
+
+const comboEl =
+    document.getElementById("combo");
+
+const timeEl =
+    document.getElementById("time");
+
+const progressEl =
+    document.getElementById("progress");
+
+const countdown =
+    document.getElementById("countdown");
+
+const countNumber =
+    document.getElementById("countNumber");
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+document.getElementById(
+    "homeHighscore"
+).textContent = highscore;
+
+
+/* =========================================
+   SCREEN
+========================================= */
+
+function showScreen(screen) {
+
+    homeScreen.classList.remove("active");
+    gameScreen.classList.remove("active");
+    resultScreen.classList.remove("active");
+
+    screen.classList.add("active");
+
+}
+
+
+/* =========================================
+   START GAME
+========================================= */
+
+function startGame() {
+
+    clearAllTimers();
+
+    score = 0;
+    combo = 0;
+    bestComboThisGame = 0;
+    caught = 0;
+
+    timeLeft = GAME_TIME;
+
+    difficulty = 1;
+
+    freezeUntil = 0;
+
+    updateUI();
+
+    showScreen(gameScreen);
+
+    kailash.style.display = "flex";
+
+    removeAllBonuses();
+
+    countdown.classList.add("active");
+
+    let count = 3;
+
+    countNumber.textContent = count;
+
+    countdownAnimation();
+
+
+    countdownTimer = setInterval(() => {
+
+        count--;
+
+        if(count > 0) {
+
+            countNumber.textContent = count;
+
+            countdownAnimation();
+
+        } else {
+
+            clearInterval(countdownTimer);
+
+            countdown.classList.remove("active");
+
+            beginGame();
+
+        }
+
+    },1000);
+
+}
+
+
+/* =========================================
+   COUNTDOWN ANIMATION
+========================================= */
+
+function countdownAnimation() {
+
+    countNumber.classList.remove("count-number");
+
+    void countNumber.offsetWidth;
+
+    countNumber.classList.add("count-number");
+
+}
+
+
+/* =========================================
+   BEGIN
+========================================= */
+
+function beginGame() {
+
+    gameRunning = true;
+
+    placeKailash();
+
+    startGameTimer();
+
+    scheduleMove();
+
+    scheduleBonus();
+
+}
+
+
+/* =========================================
+   GAME TIMER
+========================================= */
+
+function startGameTimer() {
+
+    gameTimer = setInterval(() => {
+
+        if(!gameRunning) return;
+
+        timeLeft--;
+
+        updateUI();
+
+        if(timeLeft <= 0) {
+
+            endGame();
+
+        }
+
+    },1000);
+
+}
+
+
+/* =========================================
+   MOVE SYSTEM
+========================================= */
+
+function scheduleMove() {
+
+    if(!gameRunning) return;
+
+    clearTimeout(moveTimer);
+
+    const speed =
+        Math.max(
+            170,
+            520 - difficulty * 32
+        );
+
+    moveTimer = setTimeout(() => {
+
+        placeKailash();
+
+        scheduleMove();
+
+    }, speed);
+
+}
+
+
+/* =========================================
+   PLACE KAILASH
+========================================= */
+
+function placeKailash() {
+
+    if(!gameRunning) return;
+
+    const rect =
+        playArea.getBoundingClientRect();
+
+    const padding = 55;
+
+    const minX = padding;
+    const maxX = rect.width - padding;
+
+    const minY = padding;
+    const maxY = rect.height - padding;
+
+    const x =
+        Math.random() *
+        (maxX - minX) +
+        minX;
+
+    const y =
+        Math.random() *
+        (maxY - minY) +
+        minY;
+
+
+    kailash.style.left = x + "px";
+    kailash.style.top = y + "px";
+
+
+    /*
+       Size decreases as difficulty increases.
+    */
+
+    const size =
+        Math.max(
+            46,
+            82 - difficulty * 3
+        );
+
+    kailash.style.width = size + "px";
+    kailash.style.height = size + "px";
+
+    kailash.style.fontSize =
+        (size * .70) + "px";
+
+
+    scheduleMove();
+
+}
+
+
+/* =========================================
+   CATCH KAILASH
+========================================= */
+
+kailash.addEventListener("pointerdown", e => {
+
+    e.preventDefault();
+
+    if(!gameRunning) return;
+
+    /*
+       Don't allow catching during freeze
+       animation weirdness.
+    */
+
+    const now = Date.now();
+
+    if(now < freezeUntil) return;
+
+
+    caught++;
+
+    combo++;
+
+    bestComboThisGame =
+        Math.max(
+            bestComboThisGame,
+            combo
+        );
+
+
+    /*
+       Score increases with combo.
+    */
+
+    const gained =
+        1 + Math.floor(combo / 5);
+
+    score += gained;
+
+
+    /*
+       Difficulty increases.
+    */
+
+    difficulty =
+        Math.min(
+            12,
+            1 + Math.floor(score / 5)
+        );
+
+
+    createFloatText(
+        "+" + gained,
+        kailash.offsetLeft,
+        kailash.offsetTop
+    );
+
+
+    createParticles(
+        kailash.offsetLeft,
+        kailash.offsetTop
+    );
+
+
+    /*
+       Small screen shake.
+    */
+
+    playArea.classList.remove("shake");
+
+    void playArea.offsetWidth;
+
+    playArea.classList.add("shake");
+
+
+    placeKailash();
+
+    updateUI();
+
+});
+
+
+/* =========================================
+   BONUS SYSTEM
+========================================= */
+
+function scheduleBonus() {
+
+    if(!gameRunning) return;
+
+    clearTimeout(bonusTimer);
+
+    const delay =
+        3500 + Math.random() * 4000;
+
+    bonusTimer = setTimeout(() => {
+
+        spawnBonus();
+
+        scheduleBonus();
+
+    }, delay);
+
+}
+
+
+function spawnBonus() {
+
+    if(!gameRunning) return;
+
+    const rect =
+        playArea.getBoundingClientRect();
+
+    const x =
+        50 + Math.random() *
+        (rect.width - 100);
+
+    const y =
+        50 + Math.random() *
+        (rect.height - 100);
+
+
+    /*
+       Random bonus.
+    */
+
+    const type =
+        Math.random() < .65
+            ? "star"
+            : "freeze";
+
+
+    const bonus =
+        document.createElement("div");
+
+    bonus.className = "bonus";
+
+    bonus.dataset.type = type;
+
+    bonus.textContent =
+        type === "star"
+            ? "⭐"
+            : "❄️";
+
+
+    bonus.style.left = x + "px";
+    bonus.style.top = y + "px";
+
+
+    playArea.appendChild(bonus);
+
+
+    let alive = true;
+
+
+    bonus.addEventListener("pointerdown", e => {
+
+        e.preventDefault();
+
+        if(!gameRunning || !alive) return;
+
+        alive = false;
+
+
+        if(type === "star") {
+
+            score += 5;
+
+            combo += 2;
+
+            createFloatText(
+                "+5 ⭐",
+                x,
+                y
+            );
+
+            createParticles(x,y);
+
+        } else {
+
+            freezeUntil =
+                Date.now() + 3000;
+
+            createFreezeEffect();
+
+            createFloatText(
+                "FREEZE! ❄️",
+                x,
+                y
+            );
+
+        }
+
+
+        bonus.remove();
+
+        updateUI();
+
+    });
+
+
+    /*
+       Bonus disappears after 4 seconds.
+    */
+
+    setTimeout(() => {
+
+        if(alive) {
+
+            alive = false;
+
+            bonus.remove();
+
+        }
+
+    },4000);
+
+}
+
+
+/* =========================================
+   FREEZE EFFECT
+========================================= */
+
+function createFreezeEffect() {
+
+    const effect =
+        document.createElement("div");
+
+    effect.className =
+        "freeze-overlay";
+
+    playArea.appendChild(effect);
+
+
+    setTimeout(() => {
+
+        effect.remove();
+
+    },3000);
+
+}
+
+
+/* =========================================
+   FLOAT TEXT
+========================================= */
+
+function createFloatText(text,x,y) {
+
+    const el =
+        document.createElement("div");
+
+    el.className =
+        "float-text";
+
+    el.textContent = text;
+
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+
+
+    playArea.appendChild(el);
+
+
+    setTimeout(() => {
+
+        el.remove();
+
+    },700);
+
+}
+
+
+/* =========================================
+   PARTICLES
+========================================= */
+
+function createParticles(x,y) {
+
+    const symbols =
+        ["✨","⭐","💫","✦","•"];
+
+    for(let i=0;i<7;i++) {
+
+        const particle =
+            document.createElement("div");
+
+        particle.className =
+            "particle";
+
+        particle.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+
+
+        const angle =
+            Math.random() *
+            Math.PI * 2;
+
+        const distance =
+            30 + Math.random() * 70;
+
+
+        particle.style.setProperty(
+            "--x",
+            Math.cos(angle) *
+            distance +
+            "px"
+        );
+
+        particle.style.setProperty(
+            "--y",
+            Math.sin(angle) *
+            distance +
+            "px"
+        );
+
+
+        playArea.appendChild(particle);
+
+
+        setTimeout(() => {
+
+            particle.remove();
+
+        },800);
+
+    }
+
+}
+
+
+/* =========================================
+   UI
+========================================= */
+
+function updateUI() {
+
+    scoreEl.textContent = score;
+
+    comboEl.textContent =
+        "x" + combo;
+
+    timeEl.textContent =
+        timeLeft;
+
+    progressEl.style.transform =
+        "scaleX(" +
+        (timeLeft / GAME_TIME) +
+        ")";
+
+
+    if(combo >= 5) {
+
+        comboEl.style.transform =
+            "scale(1.15)";
+
+    } else {
+
+        comboEl.style.transform =
+            "scale(1)";
+
+    }
+
+}
+
+
+/* =========================================
+   END GAME
+========================================= */
+
+function endGame() {
+
+    if(!gameRunning) return;
+
+    gameRunning = false;
+
+    clearAllTimers();
+
+    removeAllBonuses();
+
+    kailash.style.display = "none";
+
+
+    const isNewHighscore =
+        score > highscore;
+
+
+    if(isNewHighscore) {
+
+        highscore = score;
+
+        localStorage.setItem(
+            "catchKailashHighscore",
+            highscore
+        );
+
+    }
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent = score;
+
+
+    document.getElementById(
+        "finalHighscore"
+    ).textContent = highscore;
+
+
+    document.getElementById(
+        "bestCombo"
+    ).textContent =
+        "x" + bestComboThisGame;
+
+
+    document.getElementById(
+        "caughtCount"
+    ).textContent = caught;
+
+
+    let emoji = "😐";
+    let title = "LUMAYAN.";
+    let message =
+        "Kailash masih bisa kabur dari lu.";
+
+
+    if(score >= 50) {
+
+        emoji = "👑";
+        title = "ABSOLUTELY INSANE";
+        message =
+            "Kailash kayaknya trauma dikejar lu.";
+
+    } else if(score >= 35) {
+
+        emoji = "🔥";
+        title = "GILA CEPET";
+        message =
+            "Refleks lu ternyata nggak main-main.";
+
+    } else if(score >= 20) {
+
+        emoji = "😎";
+        title = "NICE ONE";
+        message =
+            "Udah lumayan. Tapi Kailash belum menyerah.";
+
+    } else if(score >= 10) {
+
+        emoji = "😭";
+        title = "LUMAYAN";
+        message =
+            "Masih ada harapan buat menang.";
+
+    } else {
+
+        emoji = "💀";
+        title = "SKILL ISSUE";
+        message =
+            "Kailash lebih jago kabur daripada lu nangkep.";
+
+    }
+
+
+    if(isNewHighscore && score > 0) {
+
+        emoji = "🏆";
+        title = "NEW HIGH SCORE!";
+        message =
+            "OKAYYY. Sekarang rekor lu resmi jadi target orang lain.";
+
+    }
+
+
+    document.getElementById(
+        "resultEmoji"
+    ).textContent = emoji;
+
+
+    document.getElementById(
+        "resultTitle"
+    ).textContent = title;
+
+
+    document.getElementById(
+        "resultMessage"
+    ).textContent = message;
+
+
+    showScreen(resultScreen);
+
+}
+
+
+/* =========================================
+   REMOVE BONUS
+========================================= */
+
+function removeAllBonuses() {
+
+    document
+        .querySelectorAll(".bonus")
+        .forEach(el => el.remove());
+
+}
+
+
+/* =========================================
+   CLEAR TIMERS
+========================================= */
+
+function clearAllTimers() {
+
+    clearTimeout(moveTimer);
+    clearTimeout(bonusTimer);
+    clearInterval(gameTimer);
+    clearInterval(countdownTimer);
+
+    moveTimer = null;
+    bonusTimer = null;
+    gameTimer = null;
+    countdownTimer = null;
+
+}
+
+
+/* =========================================
+   HOME
+========================================= */
+
+function goHome() {
+
+    clearAllTimers();
+
+    gameRunning = false;
+
+    removeAllBonuses();
+
+    kailash.style.display = "flex";
+
+    countdown.classList.remove("active");
+
+    document.getElementById(
+        "homeHighscore"
+    ).textContent = highscore;
+
+    showScreen(homeScreen);
+
+}
+
+
+/* =========================================
+   PREVENT DOUBLE TAP ZOOM
+========================================= */
+
+document.addEventListener(
+    "touchstart",
+    function(e) {
+
+        if(e.touches.length > 1) {
+            e.preventDefault();
+        }
+
+    },
+    {passive:false}
+);
+
+
+/* =========================================
+   RESIZE
+========================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        if(gameRunning) {
+
+            placeKailash();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
