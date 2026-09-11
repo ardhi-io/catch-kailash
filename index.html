@@ -1,1496 +1,599 @@
- 
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CATCH KAILASH!</title>
-
+<title>Tangkap Kailash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
-
-* {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
--webkit-tap-highlight-color: transparent;
-}
-
-:root {
---purple: #8b5cf6;
---pink: #ec4899;
---blue: #38bdf8;
---yellow: #facc15;
---green: #4ade80;
---red: #fb7185;
---dark: #090b16;
-}
-
-body {
-font-family: "Fredoka", sans-serif;
-background: var(--dark);
-color: white;
-min-height: 100vh;
-overflow: hidden;
-user-select: none;
-}
-
-/* =========================
-BACKGROUND
-========================= */
-
-.background {
-position: fixed;
-inset: 0;
-overflow: hidden;
-pointer-events: none;
-z-index: 0;
-}
-
-.blob {
-position: absolute;
-border-radius: 50%;
-filter: blur(60px);
-opacity: .28;
-animation: blobMove 9s ease-in-out infinite alternate;
-}
-
-.blob.one {
-width: 280px;
-height: 280px;
-background: #7c3aed;
-top: -100px;
-left: -80px;
-}
-
-.blob.two {
-width: 300px;
-height: 300px;
-background: #ec4899;
-right: -120px;
-bottom: -100px;
-animation-delay: -3s;
-}
-
-.blob.three {
-width: 220px;
-height: 220px;
-background: #0ea5e9;
-left: 45%;
-top: 45%;
-animation-delay: -6s;
-}
-
-@keyframes blobMove {
-from {
-transform: translate(0, 0) scale(1);
-}
-
-to {
-transform: translate(35px, -25px) scale(1.2);
-}
-}
-
-/* =========================
-APP
-========================= */
-
-#app {
-position: relative;
-z-index: 2;
-width: 100%;
-height: 100vh;
-min-height: 600px;
-}
-
-/* =========================
-SCREENS
-========================= */
-
-.screen {
-position: absolute;
-inset: 0;
-display: none;
-justify-content: center;
-align-items: center;
-padding: 20px;
-}
-
-.screen.active {
-display: flex;
-animation: screenIn .45s ease;
-}
-
-@keyframes screenIn {
-from {
-opacity: 0;
-transform: scale(.97);
-}
-
-to {
-opacity: 1;
-transform: scale(1);
-}
-}
-
-/* =========================
-HOME
-========================= */
-
-.home {
-width: 100%;
-max-width: 550px;
-text-align: center;
-}
-
-.logo {
-margin-bottom: 30px;
-}
-
-.logo .emoji {
-font-size: 75px;
-display: block;
-animation: bounce 1.8s ease-in-out infinite;
-filter: drop-shadow(0 10px 25px rgba(0, 0, 0, .4));
-}
-
-@keyframes bounce {
-0%, 100% {
-transform: translateY(0) rotate(-3deg);
-}
-
-50% {
-transform: translateY(-12px) rotate(3deg);
-}
-}
-
-.logo h1 {
-font-size: clamp(42px, 12vw, 70px);
-line-height: .88;
-letter-spacing: -3px;
-font-weight: 700;
-margin-top: 12px;
-}
-
-.logo h1 span {
-background: linear-gradient(
-90deg,
-#a78bfa,
-#f472b6,
-#38bdf8
-);
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-}
-
-.logo p {
-color: #9ca3af;
-font-size: 15px;
-margin-top: 15px;
-}
-
-.home-card {
-background: rgba(255, 255, 255, .055);
-border: 1px solid rgba(255, 255, 255, .1);
-border-radius: 28px;
-padding: 25px;
-backdrop-filter: blur(20px);
-box-shadow: 0 25px 70px rgba(0, 0, 0, .35);
-}
-
-.how {
-display: flex;
-gap: 10px;
-margin-bottom: 20px;
-}
-
-.how-item {
-flex: 1;
-padding: 14px 7px;
-border-radius: 16px;
-background: rgba(255, 255, 255, .05);
-}
-
-.how-item .icon {
-font-size: 28px;
-}
-
-.how-item span {
-display: block;
-margin-top: 5px;
-color: #aaa;
-font-size: 12px;
-}
-
-.btn {
-width: 100%;
-border: none;
-color: white;
-padding: 17px;
-border-radius: 17px;
-font-family: inherit;
-font-size: 18px;
-font-weight: 600;
-cursor: pointer;
-transition: .2s;
-}
-
-.btn:active {
-transform: scale(.96);
-}
-
-.btn-primary {
-background: linear-gradient(
-135deg,
-#7c3aed,
-#ec4899
-);
-box-shadow: 0 10px 30px rgba(124, 58, 237, .3);
-}
-
-.highscore-home {
-margin-top: 16px;
-color: #888;
-font-size: 14px;
-}
-
-.highscore-home strong {
-color: #facc15;
-}
-
-/* =========================
-GAME
-========================= */
-
-.game-screen {
-flex-direction: column;
-justify-content: flex-start !important;
-padding: 12px;
-}
-
-.game-ui {
-width: 100%;
-max-width: 900px;
-display: flex;
-align-items: center;
-gap: 10px;
-z-index: 20;
-}
-
-.stat {
-flex: 1;
-background: rgba(255, 255, 255, .07);
-border: 1px solid rgba(255, 255, 255, .08);
-border-radius: 17px;
-padding: 9px 12px;
-backdrop-filter: blur(10px);
-min-width: 0;
-}
-
-.stat-label {
-color: #777;
-font-size: 10px;
-text-transform: uppercase;
-letter-spacing: 1px;
-}
-
-.stat-value {
-font-size: 24px;
-font-weight: 700;
-line-height: 1.1;
-transition: transform .15s ease;
-}
-
-.score-value {
-color: #c4b5fd;
-}
-
-.combo-value {
-color: #f472b6;
-}
-
-.time-value {
-color: #38bdf8;
-}
-
-.progress-wrap {
-width: 100%;
-max-width: 900px;
-height: 5px;
-background: rgba(255, 255, 255, .08);
-border-radius: 20px;
-margin-top: 8px;
-overflow: hidden;
-z-index: 20;
-}
-
-.progress {
-width: 100%;
-height: 100%;
-background: linear-gradient(
-90deg,
-#8b5cf6,
-#ec4899,
-#38bdf8
-);
-transform-origin: left;
-transition: transform .2s linear;
-}
-
-/* =========================
-PLAY AREA
-========================= */
-
-#playArea {
-position: relative;
-width: 100%;
-max-width: 900px;
-flex: 1;
-margin-top: 10px;
-border-radius: 25px;
-overflow: hidden;
-border: 1px solid rgba(255, 255, 255, .08);
-
-background:
-radial-gradient(
-circle at 50% 50%,
-rgba(124, 58, 237, .08),
-transparent 60%
-),
-rgba(255, 255, 255, .018);
-
-touch-action: manipulation;
-}
-
-/* GRID */
-
-#playArea::before {
-content: "";
-position: absolute;
-inset: 0;
-
-background-image:
-linear-gradient(
-rgba(255, 255, 255, .025) 1px,
-transparent 1px
-),
-linear-gradient(
-90deg,
-rgba(255, 255, 255, .025) 1px,
-transparent 1px
-);
-
-background-size: 40px 40px;
-pointer-events: none;
-}
-
-/* =========================
-KAILASH IMAGE
-========================= */
-
-#kailash {
-position: absolute;
-
-width: 82px;
-height: 82px;
-
-display: flex;
-justify-content: center;
-align-items: center;
-
-cursor: pointer;
-z-index: 10;
-
-transform: translate(-50%, -50%);
-
-transition:
-left .13s cubic-bezier(.2, .8, .2, 1),
-top .13s cubic-bezier(.2, .8, .2, 1),
-width .15s ease,
-height .15s ease,
-transform .12s ease;
-
-touch-action: manipulation;
-}
-
-#kailash img {
-width: 100%;
-height: 100%;
-object-fit: contain;
-
-display: block;
-
-pointer-events: none;
-
-filter:
-drop-shadow(0 8px 12px rgba(0, 0, 0, .4));
-}
-
-#kailash:active {
-transform:
-translate(-50%, -50%)
-scale(.72);
-}
-
-.kailash-ring {
-position: absolute;
-
-width: 100%;
-height: 100%;
-
-border-radius: 50%;
-border: 2px solid rgba(167, 139, 250, .2);
-
-animation: ringPulse 1.4s infinite;
-
-pointer-events: none;
-}
-
-@keyframes ringPulse {
-0% {
-transform: scale(.8);
-opacity: 0;
-}
-
-50% {
-opacity: 1;
-}
-
-100% {
-transform: scale(1.45);
-opacity: 0;
-}
-}
-
-/* =========================
-BONUS
-========================= */
-
-.bonus {
-position: absolute;
-
-transform: translate(-50%, -50%);
-
-font-size: 38px;
-
-cursor: pointer;
-z-index: 9;
-
-animation:
-bonusFloat 1s ease-in-out infinite alternate;
-
-filter:
-drop-shadow(0 6px 12px rgba(0, 0, 0, .4));
-
-touch-action: manipulation;
-}
-
-@keyframes bonusFloat {
-from {
-transform:
-translate(-50%, -50%)
-scale(.9)
-rotate(-7deg);
-}
-
-to {
-transform:
-translate(-50%, -50%)
-scale(1.1)
-rotate(7deg);
-}
-}
-
-/* =========================
-FLOATING TEXT
-========================= */
-
-.float-text {
-position: absolute;
-
-pointer-events: none;
-z-index: 30;
-
-font-size: 22px;
-font-weight: 700;
-
-animation:
-floatText .7s ease-out forwards;
-
-transform: translate(-50%, -50%);
-
-white-space: nowrap;
-}
-
-@keyframes floatText {
-0% {
-opacity: 1;
-
-transform:
-translate(-50%, -50%)
-scale(.8);
-}
-
-100% {
-opacity: 0;
-
-transform:
-translate(-50%, -110px)
-scale(1.2);
-}
-}
-
-/* =========================
-PARTICLES
-========================= */
-
-.particle {
-position: absolute;
-
-pointer-events: none;
-z-index: 40;
-
-font-size: 16px;
-
-animation:
-particle .8s ease-out forwards;
-}
-
-@keyframes particle {
-from {
-opacity: 1;
-
-transform:
-translate(0, 0)
-scale(1)
-rotate(0);
-}
-
-to {
-opacity: 0;
-
-transform:
-translate(var(--x), var(--y))
-scale(.2)
-rotate(180deg);
-}
-}
-
-/* =========================
-COUNTDOWN
-========================= */
-
-#countdown {
-position: fixed;
-inset: 0;
-
-display: none;
-
-justify-content: center;
-align-items: center;
-
-z-index: 100;
-
-background: rgba(5, 5, 12, .45);
-
-backdrop-filter: blur(5px);
-}
-
-#countdown.active {
-display: flex;
-}
-
-.count-number {
-font-size: 130px;
-font-weight: 700;
-
-animation:
-countPop .8s ease;
-
-background: linear-gradient(
-135deg,
-#a78bfa,
-#f472b6
-);
-
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-}
-
-@keyframes countPop {
-0% {
-transform: scale(1.6);
-opacity: 0;
-}
-
-50% {
-transform: scale(1);
-opacity: 1;
-}
-
-100% {
-transform: scale(.8);
-opacity: 0;
-}
-}
-
-/* =========================
-FREEZE
-========================= */
-
-.freeze-overlay {
-position: absolute;
-inset: 0;
-
-border: 5px solid rgba(56, 189, 248, .45);
-
-border-radius: 25px;
-
-pointer-events: none;
-z-index: 25;
-
-animation:
-freezePulse .7s infinite alternate;
-}
-
-@keyframes freezePulse {
-from {
-opacity: .35;
-}
-
-to {
-opacity: .8;
-}
-}
-
-/* =========================
-RESULT
-========================= */
-
-.result-card {
-width: 100%;
-max-width: 500px;
-
-text-align: center;
-
-padding: 30px 25px;
-
-background: rgba(255, 255, 255, .055);
-
-border: 1px solid rgba(255, 255, 255, .1);
-
-border-radius: 28px;
-
-backdrop-filter: blur(20px);
-
-box-shadow:
-0 25px 70px rgba(0, 0, 0, .4);
-}
-
-.result-emoji {
-font-size: 85px;
-
-animation:
-resultBounce 1s ease-in-out infinite alternate;
-}
-
-@keyframes resultBounce {
-from {
-transform:
-translateY(0)
-rotate(-5deg);
-}
-
-to {
-transform:
-translateY(-10px)
-rotate(5deg);
-}
-}
-
-.result-card h2 {
-font-size: 38px;
-margin-top: 8px;
-}
-
-.final-score {
-font-size: 70px;
-font-weight: 700;
-
-color: #c4b5fd;
-
-margin: 10px 0;
-}
-
-.result-message {
-color: #aaa;
-line-height: 1.5;
-min-height: 45px;
-}
-
-.result-stats {
-display: flex;
-gap: 10px;
-margin: 22px 0;
-}
-
-.result-stat {
-flex: 1;
-
-background: rgba(255, 255, 255, .05);
-
-padding: 14px 8px;
-
-border-radius: 15px;
-}
-
-.result-stat small {
-display: block;
-
-color: #777;
-
-font-size: 11px;
-}
-
-.result-stat strong {
-display: block;
-
-margin-top: 4px;
-
-font-size: 21px;
-}
-
-/* =========================
-SHAKE
-========================= */
-
-.shake {
-animation: shake .28s linear;
-}
-
-@keyframes shake {
-0%, 100% {
-transform: translateX(0);
-}
-
-25% {
-transform: translateX(-7px);
-}
-
-75% {
-transform: translateX(7px);
-}
-}
-
-/* =========================
-MOBILE
-========================= */
-
-@media (max-width: 480px) {
-
-.screen {
-padding: 14px;
-}
-
-.logo .emoji {
-font-size: 62px;
-}
-
-.logo h1 {
-font-size: 48px;
-}
-
-.home-card {
-padding: 18px;
-}
-
-.how-item {
-padding: 11px 4px;
-}
-
-.how-item .icon {
-font-size: 24px;
-}
-
-.stat {
-padding: 8px 9px;
-}
-
-.stat-label {
-font-size: 8px;
-}
-
-.stat-value {
-font-size: 21px;
-}
-
-#kailash {
-width: 70px;
-height: 70px;
-}
-
-.bonus {
-font-size: 33px;
-}
-
-.result-card h2 {
-font-size: 31px;
-}
-
-.final-score {
-font-size: 60px;
-}
-}
-
-@media (max-height: 650px) {
-
-.logo {
-margin-bottom: 15px;
-}
-
-.logo .emoji {
-font-size: 48px;
-}
-
-.logo h1 {
-font-size: 40px;
-}
-
-.logo p {
-margin-top: 8px;
-}
-
-.home-card {
-padding: 16px;
-}
-}
+  :root{
+    --bg1: #FDEFF9;
+    --bg2: #E9DFFF;
+    --bg3: #DCF3FF;
+    --pink: #FFB6D9;
+    --lavender: #C9B6FF;
+    --mint: #AEEBD3;
+    --peach: #FFD3A8;
+    --coral: #FFAFA0;
+    --ink: #6B4E85;
+    --ink-soft: #9C86B3;
+    --card: rgba(255,255,255,0.72);
+    --card-border: rgba(255,255,255,0.9);
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin:0; padding:0; }
+
+  html, body{
+    height:100%; overflow:hidden;
+    font-family: 'Quicksand', sans-serif;
+    color: var(--ink);
+  }
+
+  #stage{
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,182,217,0.55), transparent 42%),
+      radial-gradient(circle at 88% 15%, rgba(220,243,255,0.7), transparent 45%),
+      radial-gradient(circle at 50% 95%, rgba(201,182,255,0.55), transparent 55%),
+      linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  .blob{
+    position:absolute; border-radius:50%;
+    opacity:0.55; filter: blur(0.5px);
+    animation: float 9s ease-in-out infinite;
+  }
+  .blob.b1{ width:70px; height:70px; background: var(--peach); top:10%; left:12%; animation-duration: 11s; }
+  .blob.b2{ width:50px; height:50px; background: var(--mint); top:72%; left:85%; animation-duration: 8s; animation-delay:1s; }
+  .blob.b3{ width:40px; height:40px; background: var(--lavender); top:48%; left:6%; animation-duration: 10s; animation-delay:2s; }
+  @keyframes float{
+    0%,100%{ transform: translateY(0) scale(1); }
+    50%{ transform: translateY(-18px) scale(1.08); }
+  }
+
+  .screen{
+    position:absolute; inset:0; z-index: 30;
+    display:none; flex-direction:column; align-items:center; justify-content:center;
+    padding: 32px 28px; text-align:center;
+  }
+  .screen.active{ display:flex; animation: screenIn .4s ease; }
+  @keyframes screenIn{
+    from{ opacity:0; transform: scale(0.98); }
+    to{ opacity:1; transform: scale(1); }
+  }
+
+  /* ---------- HUD (gameplay only) ---------- */
+  #hud{
+    position:absolute; top:0; left:0; right:0;
+    display:none; gap:12px; padding: 18px 16px 0;
+    z-index: 20;
+  }
+  .stat{
+    flex:1;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 10px 6px;
+    text-align:center;
+    box-shadow: 0 6px 16px rgba(155, 120, 200, 0.18);
+  }
+  .stat .label{
+    font-size: 11px; letter-spacing: 0.03em;
+    color: var(--ink-soft); font-weight: 600;
+  }
+  .stat .value{
+    font-family: 'Fredoka', sans-serif;
+    font-size: 26px; font-weight: 700; line-height: 1.2;
+    transition: transform .15s ease;
+  }
+  #scoreVal{ color: #E8809E; }
+  #timeVal{ color: #6FA7C4; }
+
+  #progress{
+    position:absolute; top: 78px; left:16px; right:16px; height:6px;
+    border-radius: 6px; overflow:hidden;
+    background: rgba(255,255,255,0.5);
+    z-index: 20; display:none;
+  }
+  #progressFill{
+    height:100%; width:100%;
+    background: linear-gradient(90deg, var(--lavender), var(--pink), var(--peach));
+    transform-origin: left;
+    transition: transform 0.2s linear;
+  }
+
+  #field{
+    position:absolute; inset:0; z-index: 10;
+  }
+  #field.shake{ animation: shake .28s linear; }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-6px); }
+    75%{ transform: translateX(6px); }
+  }
+
+  .target{
+    position:absolute;
+    width: 78px; height: 78px;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor: pointer;
+    transform: scale(0);
+    animation: popIn 0.18s ease-out forwards;
+  }
+  @keyframes popIn{
+    0%{ transform: scale(0); }
+    70%{ transform: scale(1.12); }
+    100%{ transform: scale(1); }
+  }
+  .target.leaving{ animation: popOut 0.16s ease-in forwards; }
+  @keyframes popOut{ to{ transform: scale(0); opacity:0; } }
+
+  .target.kailash{
+    background: linear-gradient(145deg, #FFE1EF, #E6DBFF);
+    border: 3px solid var(--pink);
+    box-shadow: 0 6px 16px rgba(232, 128, 158, 0.35);
+    overflow:hidden;
+  }
+  .target.kailash img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .target.kailash .fallback{ font-size: 32px; }
+
+  .target.star{
+    background: radial-gradient(circle at 35% 30%, #FFF6D8, var(--peach) 75%);
+    font-size: 34px;
+    box-shadow: 0 6px 16px rgba(255, 211, 168, 0.5);
+  }
+
+  .target.bomb{
+    background: radial-gradient(circle at 35% 30%, #FFD6CD, var(--coral) 80%);
+    font-size: 32px;
+    box-shadow: 0 6px 16px rgba(255, 175, 160, 0.5);
+  }
+
+  .burst{
+    position:absolute; pointer-events:none; z-index: 25;
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 20px;
+    transform: translate(-50%,0);
+    animation: burstUp 0.6s ease-out forwards;
+  }
+  @keyframes burstUp{
+    0%{ opacity:1; transform: translate(-50%,0) scale(0.9); }
+    100%{ opacity:0; transform: translate(-50%,-50px) scale(1.2); }
+  }
+
+  .sparkle-particle{
+    position:absolute; pointer-events:none; z-index: 24;
+    font-size: 14px;
+    animation: particleFly .7s ease-out forwards;
+  }
+  @keyframes particleFly{
+    from{ opacity:1; transform: translate(0,0) scale(1) rotate(0deg); }
+    to{ opacity:0; transform: translate(var(--px), var(--py)) scale(0.3) rotate(180deg); }
+  }
+
+  /* ---------- Lobby ---------- */
+  .avatarWrap{
+    position:relative; width: 140px; height: 140px; margin-bottom: 16px;
+  }
+  .avatarRing{
+    width:100%; height:100%; border-radius:50%;
+    border: 4px dashed var(--pink);
+    padding: 8px;
+    display:flex; align-items:center; justify-content:center;
+    animation: spin 18s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  .avatarInner{
+    width:100%; height:100%; border-radius:50%;
+    overflow:hidden;
+    background: linear-gradient(145deg, #FFE1EF, #E6DBFF);
+    box-shadow: 0 10px 24px rgba(155, 120, 200, 0.3);
+    animation: spinBack 18s linear infinite reverse;
+  }
+  @keyframes spinBack{ to{ transform: rotate(360deg); } }
+  .avatarInner img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .avatarInner .fallback{ width:100%; height:100%; display:none; align-items:center; justify-content:center; font-size: 52px; }
+
+  .sprinkle{ position:absolute; font-size: 17px; animation: sprinkleFloat 3.4s ease-in-out infinite; }
+  .sprinkle.s1{ top:-6px; left:-10px; animation-delay: 0s; }
+  .sprinkle.s2{ top:8px; right:-14px; animation-delay: 0.6s; }
+  .sprinkle.s3{ bottom:-6px; left:4px; animation-delay: 1.2s; }
+  @keyframes sprinkleFloat{
+    0%,100%{ transform: translateY(0) rotate(0deg); opacity: 0.85; }
+    50%{ transform: translateY(-10px) rotate(12deg); opacity: 1; }
+  }
+
+  .screen h1{
+    font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 700;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .desc{
+    font-size: 14px; line-height: 1.55; color: var(--ink-soft);
+    max-width: 300px; margin-bottom: 18px;
+  }
+  .desc b{ color: var(--ink); font-weight: 700; }
+
+  .howRow{
+    display:flex; gap:8px; width: 100%; max-width: 280px; margin-bottom: 20px;
+  }
+  .howItem{
+    flex:1; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 10px 4px; box-shadow: 0 4px 12px rgba(155,120,200,0.14);
+  }
+  .howItem .icon{ font-size: 22px; }
+  .howItem span{ display:block; margin-top:3px; font-size: 10.5px; color: var(--ink-soft); font-weight:600; }
+
+  .pillBtn{
+    font-family: 'Fredoka', sans-serif; font-size: 16.5px; font-weight: 600;
+    color: #7A4A63;
+    background: linear-gradient(145deg, #FFCFE6, #FFB6D9);
+    border: none; border-radius: 999px; padding: 14px 36px; cursor: pointer;
+    box-shadow: 0 10px 22px rgba(232, 128, 158, 0.4);
+  }
+  .pillBtn:active{ transform: scale(0.97); }
+  .pillBtn.ghost{
+    background: var(--card); color: var(--ink);
+    box-shadow: 0 6px 16px rgba(155,120,200,0.18);
+    margin-top: 10px; padding: 12px 30px; font-size: 15px;
+  }
+
+  .bestLine{ margin-top: 14px; font-size: 12.5px; color: var(--ink-soft); }
+  .bestLine strong{ color: #E8809E; }
+
+  /* ---------- Countdown ---------- */
+  #countdownScreen{ z-index: 40; }
+  .countNumber{
+    font-family: 'Fredoka', sans-serif;
+    font-size: 110px; font-weight: 700;
+    background: linear-gradient(135deg, var(--lavender), var(--pink));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: countPop .8s ease;
+  }
+  @keyframes countPop{
+    0%{ transform: scale(1.5); opacity:0; }
+    50%{ transform: scale(1); opacity:1; }
+    100%{ transform: scale(0.85); opacity:0; }
+  }
+
+  /* ---------- Result ---------- */
+  .resultCard{
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 26px; padding: 28px 24px;
+    box-shadow: 0 16px 40px rgba(155, 120, 200, 0.28);
+    width: min(84vw, 300px);
+  }
+  .resultCard .finalScore{
+    font-family: 'Fredoka', sans-serif; font-size: 48px; font-weight: 700;
+    color: #E8809E; margin: 6px 0 14px;
+  }
+  .resultStats{ display:flex; gap:8px; margin-bottom: 20px; }
+  .resultStat{
+    flex:1; background: rgba(255,255,255,0.6); border-radius: 14px; padding: 10px 6px;
+  }
+  .resultStat small{ display:block; font-size: 10px; color: var(--ink-soft); font-weight:600; }
+  .resultStat strong{ display:block; margin-top:3px; font-size: 18px; color: var(--ink); }
 </style>
 </head>
-
 <body>
 
-<div class="background">
-<div class="blob one"></div>
-<div class="blob two"></div>
-<div class="blob three"></div>
+<div id="stage">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <div id="hud">
+    <div class="stat"><div class="label">SCORE</div><div class="value" id="scoreVal">0</div></div>
+    <div class="stat"><div class="label">TIME</div><div class="value" id="timeVal">30</div></div>
+  </div>
+  <div id="progress"><div id="progressFill"></div></div>
+
+  <div id="field"></div>
+
+  <!-- LOBBY -->
+  <div id="lobbyScreen" class="screen active">
+    <div class="avatarWrap">
+      <div class="avatarRing">
+        <div class="avatarInner">
+          <img src="kailash.png" alt="kailash" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="fallback">😊</div>
+        </div>
+      </div>
+      <div class="sprinkle s1">✨</div>
+      <div class="sprinkle s2">⭐</div>
+      <div class="sprinkle s3">💫</div>
+    </div>
+
+    <h1>Tangkap Kailash!</h1>
+    <p class="desc">
+      Kailash muncul di layar secara acak — tap dia buat <b>+1 poin</b>.
+      Ada bintang buat <b>+5 poin</b>, dan bom yang bikin <b>-2 poin</b> kalau kesenggol.
+      Cuma <b>30 detik</b>, jadi tap secepat yang kamu bisa!
+    </p>
+
+    <div class="howRow">
+      <div class="howItem"><div class="icon">👀</div><span>CARI</span></div>
+      <div class="howItem"><div class="icon">👆</div><span>TAP</span></div>
+      <div class="howItem"><div class="icon">🏆</div><span>MENANG</span></div>
+    </div>
+
+    <button class="pillBtn" id="startBtn">Mulai Main</button>
+    <div class="bestLine" id="bestLobby" style="display:none;">Rekor terbaik: <strong id="bestLobbyVal">0</strong></div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div id="countdownScreen" class="screen">
+    <div class="countNumber" id="countNumber">3</div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultScreen" class="screen">
+    <div class="resultCard">
+      <h1 id="resultTitle">Waktu Habis!</h1>
+      <div class="finalScore" id="finalScoreVal">0</div>
+      <div class="resultStats">
+        <div class="resultStat"><small>REKOR</small><strong id="statBest">0</strong></div>
+        <div class="resultStat"><small>TERTANGKAP</small><strong id="statCaught">0</strong></div>
+      </div>
+      <button class="pillBtn" id="restartBtn">Main Lagi</button>
+      <br>
+      <button class="pillBtn ghost" id="homeBtn">Ke Lobby</button>
+    </div>
+  </div>
 </div>
-
-<div id="app">
-
-<!-- =====================
-HOME
-====================== -->
-
-<section id="homeScreen" class="screen active">
-
-<div class="home">
-
-<div class="logo">
-
-<span class="emoji">🏃‍♂️</span>
-
-<h1>
-CATCH<br>
-<span>KAILASH!</span>
-</h1>
-
-<p>
-kalau bisa tangkep, tangkep.
-kalau nggak bisa... skill issue.
-</p>
-
-</div>
-
-<div class="home-card">
-
-<div class="how">
-
-<div class="how-item">
-<div class="icon">👀</div>
-<span>CARI</span>
-</div>
-
-<div class="how-item">
-<div class="icon">👆</div>
-<span>TAP</span>
-</div>
-
-<div class="how-item">
-<div class="icon">🏆</div>
-<span>MENANG</span>
-</div>
-
-</div>
-
-<button
-class="btn btn-primary"
-onclick="startGame()"
->
-🎮 START GAME
-</button>
-
-<div class="highscore-home">
-HIGH SCORE:
-<strong id="homeHighscore">0</strong>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================
-GAME
-====================== -->
-
-<section id="gameScreen" class="screen game-screen">
-
-<div class="game-ui">
-
-<div class="stat">
-<div class="stat-label">
-Score
-</div>
-
-<div
-class="stat-value score-value"
-id="score"
->
-0
-</div>
-</div>
-
-
-<div class="stat">
-<div class="stat-label">
-Combo
-</div>
-
-<div
-class="stat-value combo-value"
-id="combo"
->
-x0
-</div>
-</div>
-
-
-<div class="stat">
-<div class="stat-label">
-Time
-</div>
-
-<div
-class="stat-value time-value"
-id="time"
->
-30
-</div>
-</div>
-
-</div>
-
-
-<div class="progress-wrap">
-
-<div
-id="progress"
-class="progress"
-></div>
-
-</div>
-
-
-<div id="playArea">
-
-<div id="kailash">
-
-<div class="kailash-ring"></div>
-
-<!-- IMAGE KAILASH -->
-<img
-src="kailas.png"
-alt="Kailash"
-draggable="false"
->
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================
-RESULT
-====================== -->
-
-<section id="resultScreen" class="screen">
-
-<div class="result-card">
-
-<div
-id="resultEmoji"
-class="result-emoji"
->
-🏆
-</div>
-
-<h2 id="resultTitle">
-NICE!
-</h2>
-
-<div
-id="finalScore"
-class="final-score"
->
-0
-</div>
-
-<div
-id="resultMessage"
-class="result-message"
->
-...
-</div>
-
-<div class="result-stats">
-
-<div class="result-stat">
-<small>HIGH SCORE</small>
-<strong id="finalHighscore">0</strong>
-</div>
-
-<div class="result-stat">
-<small>BEST COMBO</small>
-<strong id="bestCombo">x0</strong>
-</div>
-
-<div class="result-stat">
-<small>CAUGHT</small>
-<strong id="caughtCount">0</strong>
-</div>
-
-</div>
-
-<button
-class="btn btn-primary"
-onclick="startGame()"
->
-🔄 PLAY AGAIN
-</button>
-
-<button
-class="btn"
-style="
-margin-top:10px;
-background:rgba(255,255,255,.07);
-"
-onclick="goHome()"
->
-🏠 HOME
-</button>
-
-</div>
-
-</section>
-
-</div>
-
-
-<!-- COUNTDOWN -->
-
-<div id="countdown">
-
-<div
-id="countNumber"
-class="count-number"
->
-3
-</div>
-
-</div>
-
 
 <script>
-
-/* =========================================
-GAME VARIABLES
-========================================= */
-
-const GAME_TIME = 30;
-
-let score = 0;
-let combo = 0;
-let bestComboThisGame = 0;
-let caught = 0;
-
-let timeLeft = GAME_TIME;
-
-let gameRunning = false;
-
-let moveTimer = null;
-let countdownTimer = null;
-let gameTimer = null;
-let bonusTimer = null;
-
-let difficulty = 1;
-
-let freezeUntil = 0;
-
-let highscore =
-Number(
-localStorage.getItem(
-"catchKailashHighscore"
-)
-) || 0;
-
-
-/* =========================================
-ELEMENTS
-========================================= */
-
-const homeScreen =
-document.getElementById("homeScreen");
-
-const gameScreen =
-document.getElementById("gameScreen");
-
-const resultScreen =
-document.getElementById("resultScreen");
-
-const playArea =
-document.getElementById("playArea");
-
-const kailash =
-document.getElementById("kailash");
-
-const scoreEl =
-document.getElementById("score");
-
-const comboEl =
-document.getElementById("combo");
-
-const timeEl =
-document.getElementById("time");
-
-const progressEl =
-document.getElementById("progress");
-
-const countdown =
-document.getElementById("countdown");
-
-const countNumber =
-document.getElementById("countNumber");
-
-
-/* =========================================
-INITIALIZE
-========================================= */
-
-document.getElementById(
-"homeHighscore"
-).textContent = highscore;
-
-
-/* =========================================
-SCREEN
-========================================= */
-
-function showScreen(screen) {
-
-homeScreen.classList.remove("active");
-gameScreen.classList.remove("active");
-resultScreen.classList.remove("active");
-
-screen.classList.add("active");
-
-}
-
-
-/* =========================================
-START GAME
-========================================= */
-
-function startGame() {
-
-clearAllTimers();
-
-gameRunning = false;
-
-score = 0;
-combo = 0;
-bestComboThisGame = 0;
-caught = 0;
-
-timeLeft = GAME_TIME;
-
-difficulty = 1;
-
-freezeUntil = 0;
-
-updateUI();
-
-showScreen(gameScreen);
-
-kailash.style.display = "flex";
-
-removeAllBonuses();
-
-countdown.classList.add("active");
-
-let count = 3;
-
-countNumber.textContent = count;
-
-countdownAnimation();
-
-
-countdownTimer = setInterval(() => {
-
-count--;
-
-if (count > 0) {
-
-countNumber.textContent = count;
-
-countdownAnimation();
-
-} else {
-
-clearInterval(countdownTimer);
-
-countdownTimer = null;
-
-countdown.classList.remove("active");
-
-beginGame();
-
-}
-
-}, 1000);
-
-}
-
-
-/* =========================================
-COUNTDOWN ANIMATION
-========================================= */
-
-function countdownAnimation() {
-
-countNumber.classList.remove("count-number");
-
-void countNumber.offsetWidth;
-
-countNumber.classList.add("count-number");
-
-}
-
-
-/* =========================================
-BEGIN GAME
-========================================= */
-
-function beginGame() {
-
-gameRunning = true;
-
-placeKailash();
-
-startGameTimer();
-
-scheduleMove();
-
-scheduleBonus();
-
-}
-
-
-/* =========================================
-GAME TIMER
-========================================= */
-
-function startGameTimer() {
-
-gameTimer = setInterval(() => {
-
-if (!gameRunning) return;
-
-timeLeft--;
-
-updateUI();
-
-if (timeLeft <= 0) {
-
-endGame();
-
-}
-
-}, 1000);
-
-}
-
-
-/* =========================================
-MOVE SYSTEM
-========================================= */
-
-function scheduleMove() {
-
-if (!gameRunning) return;
-
-clearTimeout(moveTimer);
-
-const speed =
-Math.max(
-170,
-520 - difficulty * 32
-);
-
-moveTimer = setTimeout(() => {
-
-placeKailash();
-
-scheduleMove();
-
-}, speed);
-
-}
-
-
-/* =========================================
-PLACE KAILASH
-========================================= */
-
-function placeKailash() {
-
-if (!gameRunning) return;
-
-const rect =
-playArea.getBoundingClientRect();
-
-/*
-Padding dibuat mengikuti ukuran
-Kailash agar tidak keluar area.
-*/
-
-const size =
-Math.max(
-46,
-82 - difficulty * 3
-);
-
-const padding =
-Math.max(40, size / 2 + 8);
-
-const minX = padding;
-const maxX = Math.max(
-minX,
-rect.width - padding
-);
-
-const minY = padding;
-const maxY = Math.max(
-minY,
-rect.height - padding
-);
-
-const x =
-Math.random() *
-(maxX - minX) +
-minX;
-
-const y =
-Math.random() *
-(maxY - minY) +
-minY;
-
-
-kailash.style.left = x + "px";
-kailash.style.top = y + "px";
-
-kailash.style.width =
-size + "px";
-
-kailash.style.height =
-size + "px";
-
-}
-
-
-/* =========================================
-CATCH KAILASH
-========================================= */
-
-kailash.addEventListener(
-"pointerdown",
-e => {
-
-e.preventDefault();
-
-if (!gameRunning) return;
-
-const now = Date.now();
-
-if (now < freezeUntil) return;
-
-
-caught++;
-
-combo++;
-
-bestComboThisGame =
-Math.max(
-bestComboThisGame,
-combo
-);
-
-
-/*
-Score meningkat berdasarkan combo.
-*/
-
-const gained =
-1 + Math.floor(combo / 5);
-
-score += gained;
-
-
-/*
-Difficulty meningkat setiap 5 score.
-*/
-
-difficulty =
-Math.min(
-12,
-1 + Math.floor(score / 5)
-);
-
-
-createFloatText(
-"+" + gained,
-kailash.offsetLeft,
-kailash.offsetTop
-);
-
-
-createParticles(
-kailash.offsetLeft,
-kailash.offsetTop
-);
-
-
-/*
-Screen shake.
-*/
-
-playArea.classList.remove("shake");
-
-void playArea.offsetWidth;
-
-playArea.classList.add("shake");
+(function(){
+  const stage = document.getElementById('stage');
+  const field = document.getElementById('field');
+  const hud = document.getElementById('hud');
+  const progress = document.getElementById('progress');
+  const progressFill = document.getElementById('progressFill');
+  const scoreVal = document.getElementById('scoreVal');
+  const timeVal = document.getElementById('timeVal');
+
+  const lobbyScreen = document.getElementById('lobbyScreen');
+  const countdownScreen = document.getElementById('countdownScreen');
+  const resultScreen = document.getElementById('resultScreen');
+  const countNumber = document.getElementById('countNumber');
+
+  const startBtn = document.getElementById('startBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const homeBtn = document.getElementById('homeBtn');
+
+  const bestLobby = document.getElementById('bestLobby');
+  const bestLobbyVal = document.getElementById('bestLobbyVal');
+  const finalScoreVal = document.getElementById('finalScoreVal');
+  const statBest = document.getElementById('statBest');
+  const statCaught = document.getElementById('statCaught');
+  const resultTitle = document.getElementById('resultTitle');
+
+  const GAME_TIME = 30;
+  const HUD_SAFE_TOP = 110;
+  const FIELD_SAFE_BOTTOM = 24;
+  const TARGET_SIZE = 78;
+
+  let score = 0, best = Number(safeGet());
+  let timeLeft = GAME_TIME;
+  let running = false;
+  let caughtCount = 0;
+  let tickTimer = null, spawnTimer = null;
+  let activeTargets = new Set();
+  let spawnGap = 850;
+
+  function safeGet(){ try { return localStorage.getItem('tapKailashBest') || 0; } catch(e){ return 0; } }
+  function safeSet(v){ try { localStorage.setItem('tapKailashBest', v); } catch(e){} }
+
+  if(best > 0){ bestLobby.style.display = 'block'; bestLobbyVal.textContent = best; }
+
+  function showScreen(el){
+    [lobbyScreen, countdownScreen, resultScreen].forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function randRange(min, max){ return min + Math.random() * (max - min); }
+
+  function pickType(){
+    const r = Math.random();
+    if(r < 0.55) return 'kailash';
+    if(r < 0.82) return 'star';
+    return 'bomb';
+  }
+
+  function spawnParticles(x, y){
+    const emojis = ['✨','💗','⭐'];
+    for(let i = 0; i < 5; i++){
+      const p = document.createElement('div');
+      p.className = 'sparkle-particle';
+      p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 28 + Math.random() * 24;
+      p.style.setProperty('--px', Math.cos(angle) * dist + 'px');
+      p.style.setProperty('--py', Math.sin(angle) * dist + 'px');
+      field.appendChild(p);
+      setTimeout(() => p.remove(), 700);
+    }
+  }
+
+  function shakeField(){
+    field.classList.remove('shake');
+    void field.offsetWidth;
+    field.classList.add('shake');
+  }
+
+  function spawnTarget(){
+    if(!running) return;
+    const type = pickType();
+    const el = document.createElement('div');
+    el.className = 'target ' + type;
+
+    const w = stage.clientWidth, h = stage.clientHeight;
+    const x = randRange(16, Math.max(16, w - TARGET_SIZE - 16));
+    const y = randRange(HUD_SAFE_TOP, Math.max(HUD_SAFE_TOP, h - TARGET_SIZE - FIELD_SAFE_BOTTOM));
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+
+    if(type === 'kailash'){
+      el.innerHTML = '<img src="kailash.png" alt="kailash" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';"><div class="fallback" style="display:none;">😊</div>';
+    } else if(type === 'star'){
+      el.textContent = '⭐';
+    } else {
+      el.textContent = '💣';
+    }
+
+    let resolved = false;
+    const remove = () => {
+      if(!activeTargets.has(el)) return;
+      activeTargets.delete(el);
+      el.classList.add('leaving');
+      setTimeout(() => el.remove(), 160);
+    };
+
+    const lifespan = type === 'bomb' ? 950 : 1000;
+    const missTimer = setTimeout(() => { if(!resolved) remove(); }, lifespan);
+
+    el.addEventListener('pointerdown', () => {
+      if(resolved || !running) return;
+      resolved = true;
+      clearTimeout(missTimer);
+
+      let delta = 0, color = '';
+      if(type === 'kailash'){ delta = 1; color = '#E8809E'; caughtCount++; }
+      else if(type === 'star'){ delta = 5; color = '#D79A3C'; caughtCount++; }
+      else { delta = -2; color = '#D6675A'; shakeField(); }
+
+      score = Math.max(0, score + delta);
+      scoreVal.textContent = score;
+
+      const rect = el.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
+      const bx = rect.left - stageRect.left + rect.width/2;
+      const by = rect.top - stageRect.top;
+      burstText(bx, by, (delta > 0 ? '+' : '') + delta, color);
+      if(delta > 0) spawnParticles(bx, by + rect.height/2);
+
+      remove();
+    }, { passive: true });
+
+    field.appendChild(el);
+    activeTargets.add(el);
+  }
+
+  function burstText(x, y, text, color){
+    const el = document.createElement('div');
+    el.className = 'burst';
+    el.textContent = text;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.color = color;
+    field.appendChild(el);
+    setTimeout(() => el.remove(), 600);
+  }
+
+  function scheduleSpawn(){
+    spawnTimer = setTimeout(() => {
+      if(!running) return;
+      spawnTarget();
+      spawnGap = Math.max(480, 850 - (GAME_TIME - timeLeft) * 12);
+      scheduleSpawn();
+    }, spawnGap);
+  }
+
+  function updateHud(){
+    scoreVal.textContent = score;
+    timeVal.textContent = Math.max(0, timeLeft);
+    progressFill.style.transform = 'scaleX(' + Math.max(0, timeLeft / GAME_TIME) + ')';
+  }
+
+  function clearField(){
+    activeTargets.forEach(el => el.remove());
+    activeTargets.clear();
+    field.innerHTML = '';
+  }
+
+  function runCountdown(cb){
+    showScreen(countdownScreen);
+    let count = 3;
+    countNumber.textContent = count;
+    countNumber.style.animation = 'none';
+    void countNumber.offsetWidth;
+    countNumber.style.animation = '';
+    const timer = setInterval(() => {
+      count--;
+      if(count > 0){
+        countNumber.textContent = count;
+        countNumber.style.animation = 'none';
+        void countNumber.offsetWidth;
+        countNumber.style.animation = '';
+      } else {
+        clearInterval(timer);
+        cb();
+      }
+    }, 800);
+  }
+
+  function beginRound(){
+    hud.style.display = 'flex';
+    progress.style.display = 'block';
+    score = 0; timeLeft = GAME_TIME; spawnGap = 850; caughtCount = 0;
+    clearField();
+    updateHud();
+    running = true;
+
+    scheduleSpawn();
+    tickTimer = setInterval(() => {
+      timeLeft -= 1;
+      updateHud();
+      if(timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  function startFlow(){
+    hud.style.display = 'none';
+    progress.style.display = 'none';
+    clearField();
+    runCountdown(() => {
+      showScreen(resultScreen); // hidden immediately, just clears state
+      resultScreen.classList.remove('active');
+      beginRound();
+    });
+  }
+
+  function endGame(){
+    running = false;
+    clearInterval(tickTimer);
+    clearTimeout(spawnTimer);
+    clearField();
+    hud.style.display = 'none';
+    progress.style.display = 'none';
+
+    if(score > best){ best = score; safeSet(best); }
+    resultTitle.textContent = 'Waktu Habis!';
+    finalScoreVal.textContent = score;
+    statBest.textContent = best;
+    statCaught.textContent = caughtCount;
+
+    showScreen(resultScreen);
+  }
+
+  startBtn.addEventListener('click', startFlow);
+  restartBtn.addEventListener('click', startFlow);
+  homeBtn.addEventListener('click', () => {
+    if(best > 0){ bestLobby.style.display = 'block'; bestLobbyVal.textContent = best; }
+    showScreen(lobbyScreen);
+  });
+
+  updateHud();
+})();
+</script>
+
+</body>
+</html>
